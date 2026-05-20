@@ -922,6 +922,111 @@ document.addEventListener("keydown", (e) => {
 });
 
 </script>
+<script>
+
+let currentImages = [];
+let currentIndex = 0;
+
+// mobile-only state
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+let startX = 0;
+let swipeEnabled = false;
+
+// OPEN MODAL
+function openModal(card) {
+
+  const imageData = card.querySelector(".product-images")?.dataset.images;
+
+  currentImages = imageData
+    ? imageData.split(",").map(img => img.trim())
+    : [card.querySelector("img").src];
+
+  currentIndex = 0;
+
+  document.getElementById("modalImage").src = currentImages[currentIndex];
+
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+
+  // enable swipe ONLY on mobile
+  if (isMobile) {
+    enableSwipe();
+  }
+}
+
+// CLOSE MODAL
+function closeModal() {
+  modal.classList.remove("active");
+  document.body.style.overflow = "auto";
+
+  disableSwipe();
+}
+
+// UPDATE IMAGE
+function updateImage(direction) {
+
+  const img = document.getElementById("modalImage");
+
+  img.style.opacity = 0;
+
+  setTimeout(() => {
+
+    currentIndex += direction;
+
+    if (currentIndex < 0) currentIndex = 0;
+    if (currentIndex >= currentImages.length) currentIndex = currentImages.length - 1;
+
+    img.src = currentImages[currentIndex];
+    img.style.opacity = 1;
+
+  }, 120);
+}
+
+// ENABLE SWIPE (mobile only)
+function enableSwipe() {
+
+  if (swipeEnabled) return;
+  swipeEnabled = true;
+
+  const img = document.getElementById("modalImage");
+
+  img.addEventListener("touchstart", touchStart);
+  img.addEventListener("touchend", touchEnd);
+}
+
+// DISABLE SWIPE
+function disableSwipe() {
+
+  const img = document.getElementById("modalImage");
+
+  img.removeEventListener("touchstart", touchStart);
+  img.removeEventListener("touchend", touchEnd);
+
+  swipeEnabled = false;
+}
+
+// TOUCH START
+function touchStart(e) {
+  startX = e.touches[0].clientX;
+}
+
+// TOUCH END
+function touchEnd(e) {
+
+  let endX = e.changedTouches[0].clientX;
+  let diff = startX - endX;
+
+  if (Math.abs(diff) < 50) return;
+
+  if (diff > 0) {
+    updateImage(1); // next
+  } else {
+    updateImage(-1); // prev
+  }
+}
+
+</script>
 
 <script>
 
