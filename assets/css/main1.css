@@ -1,12 +1,4 @@
-Thanks for downloading this template!
 
-Template Name: Bootslander
-Template URL: https://bootstrapmade.com/bootslander-free-bootstrap-landing-page-template/
-Author: BootstrapMade.com
-License: https://bootstrapmade.com/license/
-
-
-  <style>
     :root {
       --navy: #0B1F3A;
       --navy-mid: #122952;
@@ -20,7 +12,7 @@ License: https://bootstrapmade.com/license/
       --gray-light: #E8EDF5;
       --text: #1a2840;
       --font-display: 'Syne', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
+      --font-body: 'Roboto', sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -324,4 +316,276 @@ License: https://bootstrapmade.com/license/
       .steps-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
     }
-  </style>
+
+    /* ───────────────── PRODUCT CATALOGUE ───────────────── */
+
+.catalogue-section {
+  background: var(--white);
+}
+
+.catalogue-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: end;
+  margin-bottom: 40px;
+}
+
+.catalogue-filter-bar {
+  background: var(--off-white);
+  border: 1px solid var(--gray-light);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.catalogue-search {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.catalogue-search i {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  color: var(--gray);
+}
+
+.catalogue-search input {
+  width: 100%;
+  height: 54px;
+  border-radius: 12px;
+  border: 1px solid var(--gray-light);
+  background: white;
+  padding: 0 16px 0 48px;
+  font-size: 14px;
+  outline: none;
+}
+
+.catalogue-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-btn {
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-light);
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: white;
+}
+
+.catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--gray-light);
+  transition: all 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(11,31,58,0.08);
+}
+
+.product-thumb {
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+  background: var(--off-white);
+}
+
+.product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(11,31,58,0.9);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.product-body {
+  padding: 24px;
+}
+
+.product-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.product-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #F59E0B;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.product-desc {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.product-meta {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.meta-item {
+  flex: 1;
+  background: var(--off-white);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.meta-label {
+  display: block;
+  font-size: 11px;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+
+.meta-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-label {
+  display: block;
+  font-size: 11px;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+
+.product-price {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+.product-btn {
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 10px;
+  background: var(--navy);
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+}
+
+.product-btn:hover {
+  background: var(--orange);
+  color: white;
+}
+
+.catalogue-cta {
+  margin-top: 70px;
+  background: linear-gradient(
+    135deg,
+    var(--navy),
+    var(--navy-mid)
+  );
+  border-radius: 24px;
+  padding: 60px;
+  text-align: center;
+}
+
+.catalogue-cta h3 {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 14px;
+}
+
+.catalogue-cta p {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  max-width: 640px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+@media (max-width: 991px) {
+
+  .catalogue-header {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .catalogue-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 640px) {
+
+  .catalogue-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalogue-cta {
+    padding: 40px 24px;
+  }
+
+  .catalogue-cta h3 {
+    font-size: 28px;
+  }
+
+}
