@@ -760,3 +760,60 @@
 .slider-btn:hover {
   background: var(--orange);
 }
+
+@media (max-width: 768px) {
+
+  .modal-content {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border-radius: 0;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-left,
+  .modal-right {
+    padding: 16px;
+  }
+
+  .modal-image-slider {
+    height: 220px;
+  }
+
+  .modal-info h2 {
+    font-size: 20px;
+  }
+
+  .modal-right {
+    border-top: 1px solid var(--gray-light);
+  }
+}
+.modal-content {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .modal-close {
+    width: 44px;
+    height: 44px;
+    top: 10px;
+    right: 10px;
+  }
+}
+@media (max-width: 768px) {
+
+  .related-list {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .related-item {
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+}
