@@ -107,14 +107,16 @@
           <img src="assets/img/products/65TV.webp" alt="">
           <span class="product-badge">Smart TV</span>
         </div>
-
+        <div class="product-images"
+        data-images="assets/img/products/65TV.webp,assets/img/products/65TV2.avif,assets/img/products/65TV3.jpg,assets/img/products/65TV4.webp">
+        </div>
         <div class="product-body">
 
           <div class="product-top">
             <h3 class="product-title">65" Samsung QLED 65Q70T </h3>
             <div class="product-rating">
               <i class="bi bi-star-fill"></i>
-              <span>4.7</span>
+              <span>4.5</span>
             </div>
           </div>
 
@@ -154,6 +156,9 @@
         <div class="product-thumb">
           <img src="assets/img/products/55TV.jpg" alt="">
           <span class="product-badge">Smart TV</span>
+        </div>
+        <div class="product-images"
+        data-images="assets/img/products/55TV.jpg,assets/img/products/85TV.jpg,assets/img/products/65TV2.avif,assets/img/products/65TV3.jpg,assets/img/products/65TV4.webp">
         </div>
 
         <div class="product-body">
@@ -203,7 +208,9 @@
           <img src="assets/img/products/doublefridge.jpg" alt="">
           <span class="product-badge">Refrigerators</span>
         </div>
-
+        <div class="product-images"
+        data-images="assets/img/products/doublefridge.jpg,assets/img/products/fridge2.jpg,assets/img/products/fridge3.jpg,assets/img/products/fridge4.jpg">
+        </div>
         <div class="product-body">
 
           <div class="product-top">
@@ -252,7 +259,9 @@
           <img src="assets/img/products/85TV.jpg" alt="">
           <span class="product-badge">Smart TV</span>
         </div>
-
+        <div class="product-images"
+        data-images="assets/img/products/85TV.jpg,assets/img/products/65TV.webp,assets/img/products/65TV2.avif,assets/img/products/65TV3.jpg,assets/img/products/65TV4.webp">
+        </div>
         <div class="product-body">
 
           <div class="product-top">
@@ -299,6 +308,10 @@
         <div class="product-thumb">
           <img src="assets/img/products/ac.jpg" alt="">
           <span class="product-badge">Air Conditioners</span>
+        </div>
+        
+        <div class="product-images"
+        data-images="assets/img/products/ac.jpg,assets/img/products/ac1.jpg,assets/img/products/ac2.gif,assets/img/products/ac3.jpg">
         </div>
 
         <div class="product-body">
@@ -712,9 +725,195 @@
 
   </div>
 </section>
+<!-- PRODUCT MODAL -->
+<div class="product-modal" id="productModal">
 
+  <div class="modal-overlay" onclick="closeModal()"></div>
 
+  <div class="modal-content">
 
+    <button class="modal-close" onclick="closeModal()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <div class="modal-grid">
+
+      <!-- LEFT: IMAGE + INFO -->
+      <div class="modal-left">
+
+        <div class="modal-image-slider">
+            <button class="slider-btn left" onclick="prevImage()">‹</button>
+            <img id="modalImage" src="" alt="">
+            <button class="slider-btn right" onclick="nextImage()">›</button>
+        </div>
+
+        <div class="modal-info">
+          <h2 id="modalTitle"></h2>
+          <p id="modalDesc"></p>
+
+          <div class="modal-specs">
+            <div><strong>MOQ:</strong> <span id="modalMOQ"></span></div>
+            <div><strong>Shipping:</strong> <span id="modalShipping"></span></div>
+            <div><strong>Price:</strong> <span id="modalPrice"></span></div>
+          </div>
+
+          <a id="modalWhatsApp" class="modal-btn" target="_blank">
+            Request Quote on WhatsApp
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT: RELATED PRODUCTS -->
+      <div class="modal-right">
+
+        <h3>Related Products</h3>
+
+        <div id="relatedProducts" class="related-list"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+const modal = document.getElementById("productModal");
+const allProducts = document.querySelectorAll(".product-card");
+
+let currentImages = [];
+let currentIndex = 0;
+let currentCard = null;
+
+// OPEN MODAL
+function openModal(card) {
+
+  currentCard = card;
+
+  const title = card.querySelector(".product-title").innerText;
+  const desc = card.querySelector(".product-desc").innerText;
+  const price = card.querySelector(".product-price").innerText;
+  const metaValues = card.querySelectorAll(".meta-value");
+  const moq = metaValues[0]?.innerText || "";
+  const shipping = metaValues[1]?.innerText || "";
+  const category = card.dataset.category;
+
+  // IMAGES
+  const imageData = card.querySelector(".product-images")?.dataset.images;
+
+  currentImages = imageData
+    ? imageData.split(",")
+    : [card.querySelector("img").src];
+
+  currentIndex = 0;
+
+  // SET MODAL CONTENT
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalDesc").innerText = desc;
+  document.getElementById("modalPrice").innerText = price;
+  document.getElementById("modalMOQ").innerText = moq;
+  document.getElementById("modalShipping").innerText = shipping;
+
+  document.getElementById("modalImage").src = currentImages[currentIndex];
+
+  // WHATSAPP LINK
+  document.getElementById("modalWhatsApp").href =
+    "https://wa.me/8619587404164?text=I want a quote for " + encodeURIComponent(title);
+
+  // RELATED PRODUCTS
+  loadRelated(category, card);
+
+  // SHOW MODAL
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+// CLOSE MODAL
+function closeModal() {
+  modal.classList.remove("active");
+  document.body.style.overflow = "auto";
+}
+
+// NEXT IMAGE
+function nextImage() {
+  if (currentIndex < currentImages.length - 1) {
+    currentIndex++;
+    updateImage();
+  }
+}
+
+// PREV IMAGE
+function prevImage() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateImage();
+  }
+}
+
+// UPDATE IMAGE
+function updateImage() {
+  const img = document.getElementById("modalImage");
+  img.style.opacity = 0;
+
+  setTimeout(() => {
+    img.src = currentImages[currentIndex];
+    img.style.opacity = 1;
+  }, 150);
+}
+
+// RELATED PRODUCTS
+function loadRelated(category, currentCard) {
+
+  const container = document.getElementById("relatedProducts");
+  container.innerHTML = "";
+
+  document.querySelectorAll(".product-card").forEach(card => {
+
+    if (card.dataset.category === category && card !== currentCard) {
+
+      const img = card.querySelector("img").src;
+      const title = card.querySelector(".product-title").innerText;
+
+      const item = document.createElement("div");
+      item.className = "related-item";
+
+      item.innerHTML = `
+        <img src="${img}">
+        <div style="font-size:13px;font-weight:600">${title}</div>
+      `;
+
+      item.onclick = () => openModal(card);
+
+      container.appendChild(item);
+    }
+
+  });
+}
+
+// CLICK EVENT ON PRODUCT CARDS
+allProducts.forEach(card => {
+
+  card.style.cursor = "pointer";
+
+  card.addEventListener("click", (e) => {
+
+    // prevent clicking WhatsApp button opening modal
+    if (e.target.closest(".product-btn")) return;
+
+    openModal(card);
+  });
+
+});
+
+// ESC KEY CLOSE
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
+});
+
+</script>
 
 <script>
 
