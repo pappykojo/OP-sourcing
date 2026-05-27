@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Data Generator — OP International</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e5e5e3;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 2rem;
+    }
+
+    .field { margin-bottom: 1.1rem; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    input[type=text],
+    input[type=number],
+    select,
+    textarea {
+      width: 100%;
+      padding: 9px 11px;
+      font-size: 14px;
+      font-family: inherit;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+      color: #1a1a1a;
+      transition: border-color 0.15s;
+    }
+
+    input[type=text]:focus,
+    input[type=number]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #aaa;
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .file-box {
+      border: 1.5px dashed #ddd;
+      border-radius: 8px;
+      padding: 16px;
+      background: #fafafa;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s;
+    }
+
+    .file-box:hover { border-color: #aaa; }
+
+    .file-box input { display: none; }
+
+    .file-hint {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .file-list { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #e5e5e3;
+      border-radius: 7px;
+      padding: 7px 10px;
+      font-size: 13px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .file-item.dragging { opacity: 0.4; }
+    .file-item.drag-over { border-color: #888; background: #f0f0ee; }
+
+    .handle {
+      color: #bbb;
+      margin-right: 8px;
+      font-size: 16px;
+      cursor: grab;
+    }
+
+    .file-name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #333;
+    }
+
+    .first-badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 6px;
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #bbb;
+      font-size: 16px;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+
+    .remove-btn:hover { color: #e24b4a; }
+
+    .generate-btn {
+      width: 100%;
+      padding: 11px;
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 1.2rem;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .generate-btn:hover { background: #333; }
+
+    .output-box {
+      margin-top: 1.5rem;
+      background: #f5f5f3;
+      border: 1px solid #e5e5e3;
+      border-radius: 8px;
+      padding: 1rem;
+      display: none;
+    }
+
+    .output-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    pre {
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 12.5px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 7px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover { border-color: #aaa; }
+    .copy-btn.copied { color: #0f6e56; border-color: #0f6e56; }
+
+    .reset-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 7px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #888;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.15s;
+    }
+
+    .reset-btn:hover { border-color: #aaa; color: #333; }
+
+    .path-note {
+      font-size: 12px;
+      color: #888;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Product data generator</h1>
+  <p class="subtitle">Fill in the fields, then copy the generated object into your PRODUCTS array.</p>
+
+  <div class="field">
+    <label>Category</label>
+    <select id="category">
+      <option value="electronics">Electronics</option>
+      <option value="appliances">Appliances</option>
+      <option value="construction">Construction</option>
+      <option value="vehicles">Vehicles</option>
+      <option value="industrial">Industrial</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Badge (label shown on thumbnail)</label>
+    <input type="text" id="badge" placeholder="e.g. Smart TV, Vehicles, Bath Tub">
+  </div>
+
+  <div class="field">
+    <label>Product images — select multiple, drag to reorder (first = thumbnail)</label>
+    <div class="file-box" onclick="document.getElementById('imgInput').click()">
+      <input type="file" id="imgInput" multiple accept="image/*">
+      <div class="file-hint"><i class="bi bi-upload"></i> &nbsp;Click to select images</div>
+    </div>
+    <div class="file-list" id="fileList"></div>
+    <p class="path-note">Paths will be generated as <strong>assets/img/products/filename.jpg</strong></p>
+  </div>
+
+  <div class="field">
+    <label>Product title</label>
+    <input type="text" id="title" placeholder="e.g. 2022 Jetour Dashing">
+  </div>
+
+  <div class="field">
+    <label>Rating (1–5)</label>
+    <input type="number" id="rating" min="1" max="5" step="0.1" value="4.5" style="width:120px">
+  </div>
+
+  <div class="field">
+    <label>Description</label>
+    <textarea id="desc" placeholder="Short product description..."></textarea>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label>Meta label</label>
+      <select id="metaLabel">
+        <option>MOQ</option>
+        <option>Mileage</option>
+        <option>Size</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Meta value</label>
+      <input type="text" id="metaValue" placeholder="e.g. 1 Unit(s) / 52,000km / 60x60">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Shipping</label>
+    <input type="text" id="shipping" placeholder="e.g. Included in price">
+  </div>
+
+  <div class="field">
+    <label>Price</label>
+    <input type="text" id="price" placeholder="e.g. ₵11,000 or $18,000">
+  </div>
+
+  <button class="generate-btn" onclick="generate()">
+    <i class="bi bi-braces"></i> &nbsp;Generate object
+  </button>
+
+  <div class="output-box" id="outputBox">
+    <div class="output-label">Ready to paste</div>
+    <pre id="outputCode"></pre>
+    <button class="copy-btn" id="copyBtn" onclick="copyCode()">
+      <i class="bi bi-clipboard"></i> Copy
+    </button>
+    <button class="reset-btn" onclick="resetForm()">
+      <i class="bi bi-arrow-counterclockwise"></i> Reset form
+    </button>
+  </div>
+</div>
+
+<script>
+  const IMAGE_PREFIX = "assets/img/products/";
+  let imageFiles = [];
+  let dragSrcIndex = null;
+
+  document.getElementById('imgInput').addEventListener('change', (e) => {
+    Array.from(e.target.files).forEach(f => {
+      if (!imageFiles.find(x => x.name === f.name)) imageFiles.push(f);
+    });
+    renderFileList();
+    e.target.value = '';
+  });
+
+  function renderFileList() {
+    const list = document.getElementById('fileList');
+    list.innerHTML = '';
+    imageFiles.forEach((f, i) => {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+      item.draggable = true;
+      item.dataset.i = i;
+      item.innerHTML = `
+        <span class="handle"><i class="bi bi-grip-vertical"></i></span>
+        ${i === 0 ? '<span class="first-badge">Thumbnail</span>' : ''}
+        <span class="file-name">${f.name}</span>
+        <button class="remove-btn" onclick="removeFile(${i})" title="Remove">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+      item.addEventListener('dragstart', () => { dragSrcIndex = i; item.classList.add('dragging'); });
+      item.addEventListener('dragend', () => item.classList.remove('dragging'));
+      item.addEventListener('dragover', (e) => { e.preventDefault(); item.classList.add('drag-over'); });
+      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+      item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        item.classList.remove('drag-over');
+        if (dragSrcIndex === null || dragSrcIndex === i) return;
+        const moved = imageFiles.splice(dragSrcIndex, 1)[0];
+        imageFiles.splice(i, 0, moved);
+        dragSrcIndex = null;
+        renderFileList();
+      });
+      list.appendChild(item);
+    });
+  }
+
+  function removeFile(i) {
+    imageFiles.splice(i, 1);
+    renderFileList();
+  }
+
+  function generate() {
+    const v = (id) => document.getElementById(id).value.trim();
+    const images = imageFiles.length
+      ? imageFiles.map(f => `"${IMAGE_PREFIX}${f.name}"`)
+      : [`"${IMAGE_PREFIX}filename.jpg"`];
+
+    const obj = `{
+  category: "${v('category')}",
+  badge: "${v('badge')}",
+  images: [
+    ${images.join(',\n    ')}
+  ],
+  title: "${v('title')}",
+  rating: ${parseFloat(v('rating')) || 4.5},
+  desc: "${v('desc').replace(/"/g, '\\"')}",
+  meta: { label: "${v('metaLabel')}", value: "${v('metaValue')}" },
+  shipping: "${v('shipping')}",
+  price: "${v('price')}"
+},`;
+
+    document.getElementById('outputCode').textContent = obj;
+    const box = document.getElementById('outputBox');
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function copyCode() {
+    const text = document.getElementById('outputCode').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('category').value = 'electronics';
+    document.getElementById('badge').value = '';
+    document.getElementById('title').value = '';
+    document.getElementById('rating').value = '4.5';
+    document.getElementById('desc').value = '';
+    document.getElementById('metaLabel').value = 'MOQ';
+    document.getElementById('metaValue').value = '';
+    document.getElementById('shipping').value = '';
+    document.getElementById('price').value = '';
+    imageFiles = [];
+    renderFileList();
+    document.getElementById('outputBox').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
