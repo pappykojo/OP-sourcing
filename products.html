@@ -125,171 +125,216 @@
   </div>
 
   
-  <script src="assets/js/products-data.js"></script>
-  <script>
-    // ─────────────────────────────────────────────
-    //  CARD RENDERER
-    // ─────────────────────────────────────────────
-    const WHATSAPP = "https://wa.me/+8619587404164";
+<script src="assets/js/products-data.js"></script>
+<script>
 
-    function buildCard(product, index) {
-      const stars = (rating) => {
-        const full = Math.floor(rating);
-        const half = rating % 1 >= 0.5;
-        let html = '';
-        for (let i = 0; i < full; i++) html += '<i class="bi bi-star-fill"></i>';
-        if (half) html += '<i class="bi bi-star-half"></i>';
-        return html;
-      };
+  // ─────────────────────────────────────────────
+  //  CARD RENDERER
+  // ─────────────────────────────────────────────
+  const WHATSAPP = "https://wa.me/+8619587404164";
 
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.dataset.category = product.category;
-      card.dataset.index = index;
+  function buildCard(product, index) {
+    const stars = (rating) => {
+      const full = Math.floor(rating);
+      const half = rating % 1 >= 0.5;
+      let html = '';
+      for (let i = 0; i < full; i++) html += '<i class="bi bi-star-fill"></i>';
+      if (half) html += '<i class="bi bi-star-half"></i>';
+      return html;
+    };
 
-      card.innerHTML = `
-    <div class="product-thumb">
-      <img src="${product.images[0]}" alt="${product.title}" loading="lazy">
-      <span class="product-badge">${product.badge}</span>
-    </div>
-    <div class="product-body">
-      <div class="product-top">
-        <h3 class="product-title">${product.title}</h3>
-        <div class="product-rating">
-          ${stars(product.rating)}
-          <span>${product.rating}</span>
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.dataset.category = product.category;
+    card.dataset.index = index;
+
+    card.innerHTML = `
+      <div class="product-thumb">
+        <img src="${product.images[0]}" alt="${product.title}" loading="lazy">
+        <span class="product-badge">${product.badge}</span>
+      </div>
+      <div class="product-body">
+        <div class="product-top">
+          <h3 class="product-title">${product.title}</h3>
+          <div class="product-rating">
+            ${stars(product.rating)}
+            <span>${product.rating}</span>
+          </div>
+        </div>
+        <p class="product-desc">${product.desc}</p>
+        <div class="product-meta">
+          <div class="meta-item">
+            <span class="meta-label">${product.meta.label}</span>
+            <span class="meta-value">${product.meta.value}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Shipping</span>
+            <span class="meta-value">${product.shipping}</span>
+          </div>
+        </div>
+        <div class="product-footer">
+          <div>
+            <span class="price-label">Estimated Price</span>
+            <div class="product-price">${product.price}</div>
+          </div>
+          <a href="${WHATSAPP}" class="product-btn" target="_blank">Request Quote</a>
         </div>
       </div>
-      <p class="product-desc">${product.desc}</p>
-      <div class="product-meta">
-        <div class="meta-item">
-          <span class="meta-label">${product.meta.label}</span>
-          <span class="meta-value">${product.meta.value}</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Shipping</span>
-          <span class="meta-value">${product.shipping}</span>
-        </div>
-      </div>
-      <div class="product-footer">
-        <div>
-          <span class="price-label">Estimated Price</span>
-          <div class="product-price">${product.price}</div>
-        </div>
-        <a href="${WHATSAPP}" class="product-btn" target="_blank">Request Quote</a>
-      </div>
-    </div>
-  `;
+    `;
 
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.product-btn')) return;
-        openModal(index);
-      });
-
-      return card;
-    }
-
-    function renderAllCards() {
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = '';
-      PRODUCTS.forEach((product, i) => grid.appendChild(buildCard(product, i)));
-    }
-
-    renderAllCards();
-
-    // ─────────────────────────────────────────────
-    //  MODAL
-    // ─────────────────────────────────────────────
-    let currentImages = [];
-    let currentIndex = 0;
-    let currentProductIndex = null;
-
-    function openModal(productIndex) {
-      const p = PRODUCTS[productIndex];
-      currentProductIndex = productIndex;
-      currentImages = p.images;
-      currentIndex = 0;
-
-      document.getElementById('modalTitle').innerText = p.title;
-      document.getElementById('modalDesc').innerText = p.desc;
-      document.getElementById('modalPrice').innerText = p.price;
-      document.getElementById('modalMeta1Label').innerText = p.meta.label + ':';
-      document.getElementById('modalMeta1Value').innerText = p.meta.value;
-      document.getElementById('modalShipping').innerText = p.shipping;
-      document.getElementById('modalImage').src = currentImages[0];
-      document.getElementById('modalWhatsApp').href =
-        `https://wa.me/8619587404164?text=I want a quote for ${encodeURIComponent(p.title)}`;
-
-      loadRelated(p.category, productIndex);
-      document.getElementById('productModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      document.getElementById('productModal').classList.remove('active');
-      document.body.style.overflow = 'auto';
-    }
-
-    function nextImage() {
-      if (currentIndex < currentImages.length - 1) { currentIndex++; updateImage(); }
-    }
-    function prevImage() {
-      if (currentIndex > 0) { currentIndex--; updateImage(); }
-    }
-    function updateImage() {
-      const img = document.getElementById('modalImage');
-      img.style.opacity = 0;
-      setTimeout(() => { img.src = currentImages[currentIndex]; img.style.opacity = 1; }, 150);
-    }
-
-    function loadRelated(category, excludeIndex) {
-      const container = document.getElementById('relatedProducts');
-      container.innerHTML = '';
-      PRODUCTS.forEach((p, i) => {
-        if (p.category === category && i !== excludeIndex) {
-          const item = document.createElement('div');
-          item.className = 'related-item';
-          item.innerHTML = `
-        <img src="${p.images[0]}" alt="${p.title}">
-        <div style="font-size:13px;font-weight:600">${p.title}</div>
-      `;
-          item.onclick = () => openModal(i);
-          container.appendChild(item);
-        }
-      });
-    }
-
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-    // ─────────────────────────────────────────────
-    //  FILTER + SEARCH
-    // ─────────────────────────────────────────────
-    let activeCategory = 'all';
-
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeCategory = btn.dataset.filter;
-        filterProducts();
-      });
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.product-btn')) return;
+      openModal(index);
     });
 
-    document.querySelector('.catalogue-search input').addEventListener('input', filterProducts);
+    return card;
+  }
 
-    function filterProducts() {
-      const searchTerm = document.querySelector('.catalogue-search input').value.toLowerCase();
-      document.querySelectorAll('.product-card').forEach((card) => {
-        const i = parseInt(card.dataset.index);
-        const p = PRODUCTS[i];
-        const matchesCategory = activeCategory === 'all' || p.category === activeCategory;
-        const matchesSearch = p.title.toLowerCase().includes(searchTerm) ||
-          p.desc.toLowerCase().includes(searchTerm);
-        card.style.display = (matchesCategory && matchesSearch) ? 'block' : 'none';
+  // ─────────────────────────────────────────────
+  //  PAGINATION + RENDER
+  // ─────────────────────────────────────────────
+  const PAGE_SIZE = 18;
+  let currentPage = 1;
+  let filteredProducts = [...PRODUCTS];
+
+  function renderPage() {
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = '';
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    filteredProducts.slice(start, end).forEach((product) => {
+      const index = PRODUCTS.indexOf(product);
+      grid.appendChild(buildCard(product, index));
+    });
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE);
+    const existing = document.getElementById('pagination');
+    if (existing) existing.remove();
+    if (totalPages <= 1) return;
+
+    const nav = document.createElement('div');
+    nav.id = 'pagination';
+    nav.style.cssText = 'display:flex;justify-content:center;gap:8px;margin:40px 0;flex-wrap:wrap;';
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.style.cssText = `padding:8px 16px;border:1px solid #ddd;background:${i === currentPage ? '#000' : '#fff'};color:${i === currentPage ? '#fff' : '#000'};cursor:pointer;border-radius:4px;font-size:14px;`;
+      btn.addEventListener('click', () => {
+        currentPage = i;
+        renderPage();
+        document.getElementById('catalogue').scrollIntoView({ behavior: 'smooth' });
       });
+      nav.appendChild(btn);
     }
-  </script>
+
+    document.getElementById('productGrid').after(nav);
+  }
+
+  // ─────────────────────────────────────────────
+  //  MODAL
+  // ─────────────────────────────────────────────
+  let currentImages = [];
+  let currentIndex = 0;
+  let currentProductIndex = null;
+
+  function openModal(productIndex) {
+    const p = PRODUCTS[productIndex];
+    currentProductIndex = productIndex;
+    currentImages = p.images;
+    currentIndex = 0;
+
+    document.getElementById('modalTitle').innerText = p.title;
+    document.getElementById('modalDesc').innerText = p.desc;
+    document.getElementById('modalPrice').innerText = p.price;
+    document.getElementById('modalMeta1Label').innerText = p.meta.label + ':';
+    document.getElementById('modalMeta1Value').innerText = p.meta.value;
+    document.getElementById('modalShipping').innerText = p.shipping;
+    document.getElementById('modalImage').src = currentImages[0];
+    document.getElementById('modalWhatsApp').href =
+      `https://wa.me/8619587404164?text=I want a quote for ${encodeURIComponent(p.title)}`;
+
+    loadRelated(p.category, productIndex);
+    document.getElementById('productModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('productModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  function nextImage() {
+    if (currentIndex < currentImages.length - 1) { currentIndex++; updateImage(); }
+  }
+  function prevImage() {
+    if (currentIndex > 0) { currentIndex--; updateImage(); }
+  }
+  function updateImage() {
+    const img = document.getElementById('modalImage');
+    img.style.opacity = 0;
+    setTimeout(() => { img.src = currentImages[currentIndex]; img.style.opacity = 1; }, 150);
+  }
+
+  function loadRelated(category, excludeIndex) {
+    const container = document.getElementById('relatedProducts');
+    container.innerHTML = '';
+    PRODUCTS.forEach((p, i) => {
+      if (p.category === category && i !== excludeIndex) {
+        const item = document.createElement('div');
+        item.className = 'related-item';
+        item.innerHTML = `
+          <img src="${p.images[0]}" alt="${p.title}">
+          <div style="font-size:13px;font-weight:600">${p.title}</div>
+        `;
+        item.onclick = () => openModal(i);
+        container.appendChild(item);
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // ─────────────────────────────────────────────
+  //  FILTER + SEARCH
+  // ─────────────────────────────────────────────
+  let activeCategory = 'all';
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCategory = btn.dataset.filter;
+      filterProducts();
+    });
+  });
+
+  document.querySelector('.catalogue-search input').addEventListener('input', filterProducts);
+
+  function filterProducts() {
+    const searchTerm = document.querySelector('.catalogue-search input').value.toLowerCase();
+    filteredProducts = PRODUCTS.filter((p) => {
+      const matchesCategory = activeCategory === 'all' || p.category === activeCategory;
+      const matchesSearch = p.title.toLowerCase().includes(searchTerm) ||
+                            p.desc.toLowerCase().includes(searchTerm);
+      return matchesCategory && matchesSearch;
+    });
+    currentPage = 1;
+    renderPage();
+  }
+
+  // ─────────────────────────────────────────────
+  //  INIT — shuffle then render
+  // ─────────────────────────────────────────────
+  PRODUCTS.sort(() => Math.random() - 0.5);
+  filteredProducts = [...PRODUCTS];
+  renderPage();
+
+</script>
 
 </body>
 
