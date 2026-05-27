@@ -501,5 +501,45 @@ const PRODUCTS = [
     meta: { label: "Mileage", value: "Unspecified" },
     shipping: "Export documents and shipping fees included to Tema Port",
     price: "₵404,600"
-  }
+  },
+{
+  category: "vehicles",
+  badge: "Vehicles",
+  images: [
+    "assets/img/products/13car1.jpg",
+    "assets/img/products/13car2.jpg",
+    "assets/img/products/13car3.jpg",
+    "assets/img/products/13car4.jpg",
+    "assets/img/products/13car5.jpg",
+    "assets/img/products/13car6.jpg"
+  ],
+  title: "Jetour Traveler T2",
+  rating: 4.7,
+  desc: "Production Date: 2023-9 First Chinese Registration: 2023-11 Colour: Black VIN: 505883",
+  meta: { label: "Mileage", value: "33,000km" },
+  shipping: "Export License and Shipping Fees Incluced",
+  price: "₵295,300"
+},
+
+{
+  category: "vehicles",
+  badge: "Vehicles",
+  images: [
+    "assets/img/products/14car1.jpg",
+    "assets/img/products/14car2.jpg",
+    "assets/img/products/14car4.jpg",
+    "assets/img/products/14car3.jpg",
+    "assets/img/products/14car5.jpg",
+    "assets/img/products/14car6.jpg"
+  ],
+  title: "Jetour Shanhai T2 C-DM",
+  rating: 4.5,
+  desc: "Production Date: 2024-12 Registrtaion Date: 2025-6 Colour: Gray VIN: 22793",
+  meta: { label: "Mileage", value: "17,000km" },
+  shipping: "Shipment and export license included",
+  price: "₵336,000"
+},
+
+
+
 ];

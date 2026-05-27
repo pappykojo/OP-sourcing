@@ -389,7 +389,7 @@
   ],
   title: "${v('title')}",
   rating: ${parseFloat(v('rating')) || 4.5},
-  desc: "${v('desc').replace(/"/g, '\\"')}",
+  desc: "${v('desc').replace(/"/g, '\\"').replace(/\n+/g, ' ').trim()}",
   meta: { label: "${v('metaLabel')}", value: "${v('metaValue')}" },
   shipping: "${v('shipping')}",
   price: "${v('price')}"
