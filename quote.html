@@ -16,6 +16,81 @@
   <script src="assets/js/products-data.js"></script>
 
   <style>
+    @media (max-width: 768px) {
+
+  .quote-section {
+    padding: 70px 0 40px;
+  }
+
+  .quote-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Remove sticky — let it scroll naturally */
+  .quote-product-card {
+    position: static;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+  }
+
+  /* Make image a side thumbnail instead of full width */
+  .quote-product-img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    height: 100%;
+  }
+
+  .quote-product-body {
+    padding: 14px;
+  }
+
+  .quote-product-title {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  /* Hide description on mobile to save space */
+  .quote-product-desc {
+    display: none;
+  }
+
+  .quote-product-specs {
+    gap: 4px;
+  }
+
+  .spec-row {
+    font-size: 12px;
+  }
+
+  .quote-product-price {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  .quote-form-card {
+    padding: 20px;
+  }
+
+  .form-heading {
+    font-size: 18px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-generate,
+  .btn-email {
+    width: 100%;
+    min-width: unset;
+  }
+
+}
     .quote-section {
       padding: 80px 0 60px;
       background: #f8f8f6;
