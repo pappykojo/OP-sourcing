@@ -113,7 +113,13 @@
               <div><strong>Shipping:</strong> <span id="modalShipping"></span></div>
               <div><strong>Price:</strong> <span id="modalPrice"></span></div>
             </div>
-            <a id="modalWhatsApp" class="modal-btn" target="_blank">Request Quote on WhatsApp</a>
+            <a id="modalWhatsApp" class="modal-btn" target="_blank">
+              <i class="bi bi-whatsapp"></i> Request Quote on WhatsApp
+            </a>
+            <a id="modalQuote" class="modal-btn"
+              style="margin-top:8px;background:#fff;color:#111;border:1.5px solid #ddd;">
+              <i class="bi bi-file-earmark-text"></i> Request Quote via Email
+            </a>
           </div>
         </div>
         <div class="modal-right">
@@ -177,7 +183,7 @@
             <span class="price-label">Estimated Price</span>
             <div class="product-price">${product.price}</div>
           </div>
-          <a href="${WHATSAPP}" class="product-btn" target="_blank">Request Quote</a>
+          <a href="quote.html?title=${encodeURIComponent(product.title)}" class="product-btn">Request Quote</a>
         </div>
       </div>
     `;
@@ -255,8 +261,26 @@
       document.getElementById('modalMeta1Value').innerText = p.meta.value;
       document.getElementById('modalShipping').innerText = p.shipping;
       document.getElementById('modalImage').src = currentImages[0];
+      const waMessage =
+        `Hello OP International,
+
+I would like to request a quote for the following product:
+
+🛒 Product: ${p.title}
+📦 Category: ${p.category.charAt(0).toUpperCase() + p.category.slice(1)}
+💰 Estimated Price: ${p.price}
+📋 ${p.meta.label}: ${p.meta.value}
+🚚 Shipping: ${p.shipping}
+🖼️ Product Image: ${window.location.origin}/${p.images[0]}
+
+Please provide me with more details and availability.
+
+Thank you.`;
+
       document.getElementById('modalWhatsApp').href =
-        `https://wa.me/8619587404164?text=I want a quote for ${encodeURIComponent(p.title)}`;
+        `https://wa.me/8619587404164?text=${encodeURIComponent(waMessage)}`;
+      document.getElementById('modalQuote').href =
+        `quote.html?title=${encodeURIComponent(p.title)}`;
 
       loadRelated(p.category, productIndex);
       document.getElementById('productModal').classList.add('active');
