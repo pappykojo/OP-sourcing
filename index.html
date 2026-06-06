@@ -748,8 +748,9 @@
        RESPONSIVE
     ============================================================ */
     @media(max-width:834px){
-      .nav-links    { display:none; }
+      .nav-links    { display:none !important; }
       .nav-hamburger{ display:block; }
+      .nav-icon-btn { display:none; }
       .sub-nav-links{ display:none; }
       .steps-container { grid-template-columns:repeat(2,1fr); }
       .services-grid   { grid-template-columns:repeat(2,1fr); }
@@ -760,10 +761,15 @@
       .stats-grid      { grid-template-columns:repeat(3,1fr); }
       .tracker-wrap    { margin:0; }
       .fc-chip         { display:none; }
+      .nav-logo        { font-size:12px; }
+      .nav-logo-mark   { width:18px; height:18px; }
     }
     @media(max-width:640px){
       .hero-title { font-size:34px; }
-      .tile       { padding:56px 18px; }
+      .hero-sub { font-size:15px; }
+      .hero-ctas { flex-direction:column; width:100%; }
+      .btn-glass, .btn-secondary { width:100%; justify-content:center; }
+      .tile       { padding:48px 16px; }
       .steps-container { grid-template-columns:1fr; }
       .services-grid   { grid-template-columns:1fr; }
       .cat-grid        { grid-template-columns:repeat(2,1fr); }
@@ -771,12 +777,26 @@
       .footer-grid     { grid-template-columns:1fr; }
       .footer-bottom   { flex-direction:column; text-align:center; }
       .footer-bottom-links { justify-content:center; }
-      .cta-glass-box   { padding:32px 24px; }
+      .cta-glass-box   { padding:32px 20px; }
+      .global-nav-inner { padding:0 14px; }
+      .nav-logo { gap:6px; }
+      .t-hero { font-size:42px; }
+      .t-display-md { font-size:26px; }
+      .t-tagline { font-size:18px; }
     }
     @media(max-width:419px){
       .hero-title { font-size:28px; }
-      .t-display  { font-size:28px; }
+      .t-display  { font-size:24px; }
       .cat-grid   { grid-template-columns:1fr; }
+      .tile { padding:40px 12px; }
+      .global-nav { height:40px; }
+      .nav-logo { font-size:11px; }
+      .nav-logo-mark { width:16px; height:16px; }
+      .nav-hamburger { font-size:18px; }
+      .mobile-nav-drawer { top:40px; }
+      .t-hero { font-size:24px; line-height:1.15; }
+      .hero-ctas { gap:10px; }
+      .btn-glass, .btn-secondary { font-size:14px; padding:10px 20px; }
     }
   </style>
 </head>
