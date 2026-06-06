@@ -816,4 +816,291 @@
     min-width: 180px;
     flex-shrink: 0;
   }
+
+  /* =========================================
+   LIQUID GLASS SHIPMENT TRACKER
+   Scoped to .liquid-glass-tracker only
+========================================= */
+
+.liquid-glass-tracker{
+    position:relative;
+    width:100%;
+    max-width:520px;
+    isolation:isolate;
+}
+
+/* Local colorful glow behind the tracker */
+.liquid-glass-tracker::before{
+    content:"";
+    position:absolute;
+    inset:-80px;
+    z-index:-1;
+    pointer-events:none;
+
+    background:
+        radial-gradient(circle at top left,#ffcc70,transparent 35%),
+        radial-gradient(circle at top right,#6ea8fe,transparent 35%),
+        radial-gradient(circle at bottom,#845ef7,transparent 40%);
+}
+
+/* Main Glass Card */
+.liquid-glass-tracker .tracker-card{
+    position:relative;
+    overflow:hidden;
+
+    padding:30px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(30px) saturate(180%);
+    -webkit-backdrop-filter:blur(30px) saturate(180%);
+
+    border:1px solid rgba(255,255,255,.20);
+    border-radius:28px;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,.12),
+        inset 0 1px 1px rgba(255,255,255,.40),
+        inset 0 -1px 1px rgba(255,255,255,.08);
+}
+
+/* Reflection Layer */
+.liquid-glass-tracker .tracker-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.35) 0%,
+        rgba(255,255,255,.08) 30%,
+        transparent 60%
+    );
+
+    mix-blend-mode:screen;
+}
+
+/* Moving Shine */
+.liquid-glass-tracker .tracker-card::after{
+    content:"";
+    position:absolute;
+
+    top:-150%;
+    left:-50%;
+
+    width:80%;
+    height:300%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.15),
+        transparent
+    );
+
+    transform:rotate(25deg);
+    animation:liquidGlassShine 8s linear infinite;
+}
+
+@keyframes liquidGlassShine{
+    from{
+        transform:translateX(-100%) rotate(25deg);
+    }
+    to{
+        transform:translateX(300%) rotate(25deg);
+    }
+}
+
+/* Header */
+.liquid-glass-tracker .tracker-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.liquid-glass-tracker .tracker-id{
+    color:rgba(255,255,255,.95);
+    font-weight:600;
+}
+
+.liquid-glass-tracker .tracker-badge{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:8px 16px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.20);
+    border-radius:999px;
+
+    color:#fff;
+}
+
+/* Timeline List */
+.liquid-glass-tracker .stage-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.liquid-glass-tracker .stage-row{
+    display:flex;
+    gap:16px;
+
+    padding:16px;
+
+    border-radius:18px;
+
+    transition:all .3s ease;
+}
+
+.liquid-glass-tracker .stage-row:hover{
+    background:rgba(255,255,255,.08);
+    transform:translateX(6px);
+}
+
+.liquid-glass-tracker .stage-row.active{
+    background:rgba(255,255,255,.12);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+        0 0 20px rgba(255,255,255,.08),
+        inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+/* Timeline Dots */
+.liquid-glass-tracker .stage-dot-wrap{
+    width:24px;
+    display:flex;
+    justify-content:center;
+    position:relative;
+    margin-top:4px;
+}
+
+.liquid-glass-tracker .stage-dot-wrap::after{
+    content:"";
+    position:absolute;
+
+    top:18px;
+    width:2px;
+    height:55px;
+
+    background:rgba(255,255,255,.15);
+}
+
+.liquid-glass-tracker .stage-row:last-child .stage-dot-wrap::after{
+    display:none;
+}
+
+.liquid-glass-tracker .stage-dot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+}
+
+.liquid-glass-tracker .done .stage-dot{
+    background:#00d084;
+    box-shadow:0 0 15px #00d084;
+}
+
+.liquid-glass-tracker .active .stage-dot{
+    background:#4dabff;
+    box-shadow:0 0 20px #4dabff;
+}
+
+/* Stage Content */
+.liquid-glass-tracker .stage-info{
+    flex:1;
+}
+
+.liquid-glass-tracker .stage-label{
+    font-weight:600;
+    color:#fff;
+}
+
+.liquid-glass-tracker .stage-time{
+    margin-top:4px;
+    font-size:.85rem;
+    color:rgba(255,255,255,.65);
+}
+
+/* Floating Glass Chips */
+.liquid-glass-tracker .fc-chip{
+    position:absolute;
+    z-index:10;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:14px 18px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+
+    border:1px solid rgba(255,255,255,.20);
+    border-radius:20px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.10),
+        inset 0 1px 0 rgba(255,255,255,.25);
+
+    animation:liquidGlassFloat 4s ease-in-out infinite;
+}
+
+.liquid-glass-tracker .fc-chip-1{
+    top:-20px;
+    right:-60px;
+}
+
+.liquid-glass-tracker .fc-chip-2{
+    bottom:-25px;
+    left:-60px;
+}
+
+.liquid-glass-tracker .fc-label{
+    font-size:.8rem;
+    color:rgba(255,255,255,.7);
+}
+
+.liquid-glass-tracker .fc-value{
+    font-weight:600;
+    color:#fff;
+}
+
+@keyframes liquidGlassFloat{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-8px);
+    }
+}
+
+/* Mobile */
+@media (max-width:768px){
+
+    .liquid-glass-tracker .fc-chip{
+        position:static;
+        animation:none;
+    }
+
+    .liquid-glass-tracker{
+        display:flex;
+        flex-direction:column;
+        gap:15px;
+    }
+}
+
+
 }
